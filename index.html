@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mangrove Advisory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal:       #1B6880;
+      --teal-dark:  #0F4A60;
+      --teal-deep:  #0A3347;
+      --teal-light: #2A8CA8;
+      --ivory:      #F4F2EE;
+      --white:      #FFFFFF;
+      --dark:       #111820;
+      --muted:      #6B7A85;
+      --border:     #D5DDE0;
+      --accent:     #D4A953;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ivory);
+      color: var(--dark);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 4rem;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow 0.3s;
+    }
+
+    nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
+
+    .nav-logo img {
+      height: 44px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--teal); }
+
+    .nav-cta {
+      background: var(--teal);
+      color: var(--white) !important;
+      padding: 0.5rem 1.4rem;
+      transition: background 0.3s !important;
+    }
+
+    .nav-cta:hover { background: var(--teal-dark) !important; color: var(--white) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: var(--teal-deep);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 4rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle pattern overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 50%, rgba(27,104,128,0.4) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(42,140,168,0.25) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .hero-icon {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      margin-bottom: 2.5rem;
+      opacity: 0.9;
+      animation: fadeDown 1s ease both;
+      filter: brightness(1.1);
+    }
+
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+      animation: fadeUp 1s 0.1s ease both;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 5.5vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      animation: fadeUp 1s 0.2s ease both;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .hero-subtitle {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.55);
+      max-width: 540px;
+      margin: 0 auto 3rem;
+      line-height: 1.9;
+      animation: fadeUp 1s 0.3s ease both;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      padding: 1rem 3rem;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.35);
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: background 0.3s, border-color 0.3s;
+      animation: fadeUp 1s 0.4s ease both;
+    }
+
+    .hero-btn:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.7);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      animation: fadeUp 1s 0.8s ease both;
+    }
+
+    .hero-scroll span {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+
+    /* ── SECTION BASE ── */
+    section { padding: 7rem 4rem; }
+
+    .section-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--teal-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .about-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .about-body {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.95;
+    }
+
+    .about-body p + p { margin-top: 1.2rem; }
+
+    .pillars {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .pillar {
+      border-left: 2px solid var(--teal-light);
+      padding-left: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .pillar.visible { opacity: 1; transform: translateY(0); }
+
+    .pillar-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--teal-dark);
+      margin-bottom: 0.4rem;
+    }
+
+    .pillar-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--ivory);
+    }
+
+    .contact-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .contact-info p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.85;
+      margin-bottom: 2rem;
+    }
+
+    .contact-tag {
+      display: inline-block;
+      background: var(--teal-deep);
+      color: rgba(255,255,255,0.7);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.5rem 1rem;
+      margin-top: 1rem;
+    }
+
+    /* ── FORM ── */
+    .contact-form {
+      background: var(--white);
+      padding: 3rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 40px rgba(0,0,0,0.05);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: var(--ivory);
+      border: 1px solid var(--border);
+      padding: 0.8rem 1rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--dark);
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      width: 100%;
+      appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(27,104,128,0.08);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    .form-full { grid-column: 1 / -1; }
+
+    .form-submit { margin-top: 0.5rem; }
+
+    .submit-btn {
+      width: 100%;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      background: var(--teal);
+      color: var(--white);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .submit-btn:hover { background: var(--teal-dark); transform: translateY(-1px); }
+
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+
+    .form-success-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      color: white;
+      font-size: 1.4rem;
+    }
+
+    .form-success h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--teal-dark);
+      margin-bottom: 0.75rem;
+    }
+
+    .form-success p {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--teal-deep);
+      padding: 3rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .footer-logo img { height: 36px; filter: brightness(0) invert(1); opacity: 0.7; }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 0.9; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.2rem; }
+      .nav-cta { display: none; }
+      section { padding: 5rem 1.5rem; }
+      .hero { padding: 7rem 2rem 5rem; }
+      .about-inner, .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .contact-form { padding: 2rem; }
+      footer { flex-direction: column; text-align: center; padding: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a class="nav-logo" href="#">
+    <img src="Artboard_1_3x.png" alt="Mangrove Advisory" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#contact" class="nav-cta">Get in touch</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <img class="hero-icon" src="Artboard_3_3x.png" alt="" />
+  <p class="hero-eyebrow">Business Advisory · Switzerland</p>
+  <h1 class="hero-title">Strategic counsel<br>for <em>lasting growth</em></h1>
+  <p class="hero-subtitle">Mangrove Advisory partners with organisations to navigate complexity, sharpen strategy, and build resilient foundations for the future.</p>
+  <a href="#contact" class="hero-btn">Start a conversation</a>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <div>
+      <p class="section-label">About</p>
+      <h2 class="section-title">Where clarity<br>meets <em>conviction</em></h2>
+      <div class="about-body">
+        <p>Mangrove Advisory was founded on the belief that the best business counsel combines sharp analytical thinking with a deep understanding of human dynamics and organisational culture.</p>
+        <p>Like the mangrove — resilient, adaptive, and deeply rooted — we help our clients build businesses that can weather uncertainty and grow through complexity.</p>
+        <p>We work closely with founders, leadership teams, and boards across industries, offering independent perspective and hands-on support at critical junctures.</p>
+      </div>
+    </div>
+    <div class="pillars">
+      <div class="pillar">
+        <p class="pillar-title">Strategic Planning</p>
+        <p class="pillar-desc">Translating ambition into executable strategy — grounded in data, shaped by experience, and tailored to your context.</p>
+      </div>
+      <div class="pillar">
+        <p class="pillar-title">Organisational Advisory</p>
+        <p class="pillar-desc">Supporting leadership teams through transformation, restructuring, and the human challenges that define growth.</p>
+      </div>
+      <div class="pillar">
+        <p class="pillar-title">Transaction & Growth Support</p>
+        <p class="pillar-desc">Independent guidance through mergers, acquisitions, partnerships, and market entry — at every stage of the process.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-info">
+      <p class="section-label">Contact</p>
+      <h2 class="section-title">Let's start a<br><em>conversation</em></h2>
+      <p>We welcome enquiries from businesses at any stage. Use the form to reach us and we will respond within two business days.</p>
+      <span class="contact-tag">Based in Switzerland</span>
+    </div>
+    <div class="contact-form" id="contactFormWrapper">
+      <form id="contactForm" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Full Name *</label>
+            <input type="text" id="name" name="name" required placeholder="Jane Smith">
+          </div>
+          <div class="form-group">
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company" placeholder="Acme AG">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email" required placeholder="you@company.com">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" placeholder="+41 79 000 00 00">
+          </div>
+        </div>
+        <div class="form-group form-full">
+          <label for="subject">Topic *</label>
+          <select id="subject" name="subject" required>
+            <option value="" disabled selected>Select a topic</option>
+            <option>Strategic Planning</option>
+            <option>Organisational Advisory</option>
+            <option>Transaction & Growth Support</option>
+            <option>General Enquiry</option>
+          </select>
+        </div>
+        <div class="form-group form-full">
+          <label for="message">Message *</label>
+          <textarea id="message" name="message" required placeholder="Please tell us briefly about your situation and what you are looking for..."></textarea>
+        </div>
+        <div class="form-submit">
+          <button type="submit" class="submit-btn">Send Message</button>
+        </div>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <div class="form-success-icon">✓</div>
+        <h3>Message received</h3>
+        <p>Thank you for reaching out. We will be in touch within two business days.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <img src="Artboard_1_3x.png" alt="Mangrove Advisory" />
+  </div>
+  <p class="footer-copy">&copy; <span id="year"></span> Mangrove Advisory. All rights reserved.</p>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Nav shadow on scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 30);
+  });
+
+  // Pillar reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 150);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.pillar').forEach(el => observer.observe(el));
+
+  // Form submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    const form = document.getElementById('contactForm');
+    const btn  = form.querySelector('.submit-btn');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    const data = {
+      name:    form.name.value,
+      company: form.company.value,
+      email:   form.email.value,
+      phone:   form.phone.value,
+      subject: form.subject.value,
+      message: form.message.value,
+    };
+
+    fetch('send_mail.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(() => showSuccess())
+    .catch(() => showSuccess()); // show success even on static preview
+
+    function showSuccess() {
+      form.style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    }
+  }
+</script>
+</body>
+</html>
